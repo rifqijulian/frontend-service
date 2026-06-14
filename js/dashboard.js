@@ -171,7 +171,9 @@ function tampilkanNotifikasiServis(namaMotor, platNomor) {
 // Save or Update a service schedule record
 async function simpanDataServis(event) {
     event.preventDefault();
+
     const token = localStorage.getItem('token');
+
     const id = document.getElementById('servis-id').value;
     const nama_motor = document.getElementById('motor-nama').value;
     const plat_nomor = document.getElementById('motor-plat').value;
@@ -181,7 +183,9 @@ async function simpanDataServis(event) {
     const status = document.getElementById('motor-status').value || 'Aman';
 
     const metodeKirim = id ? 'PUT' : 'POST';
-    const alamatUrgensi = id ? `${URL_API}/servis/${id}` : `${URL_API}/servis`;
+    const alamatUrgensi = id
+        ? `${URL_API}/servis/${id}`
+        : `${URL_API}/servis`;
 
     try {
         const respon = await fetch(alamatUrgensi, {
@@ -190,18 +194,38 @@ async function simpanDataServis(event) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ nama_motor, plat_nomor, jenis_servis, tanggal_servis, tanggal_berikutnya, status })
+            body: JSON.stringify({
+                nama_motor,
+                plat_nomor,
+                jenis_servis,
+                tanggal_servis,
+                tanggal_berikutnya,
+                status
+            })
         });
+
         const data = await respon.json();
-        
-        if (respon.ok) {
-            showToast(data.pesan || 'Catatan servis disimpan!', 'success');
-            resetFormServis();
-            ambilDaftarServis();
-        } else {
-            showToast(data.pesan, 'error');
+        console.log("HASIL SAVE:", data);
+        console.log("DATA SERVIS:", data);
+
+        if (!respon.ok) {
+            showToast(data.pesan || 'Gagal menyimpan data!', 'error');
+            return;
         }
+
+        showToast(
+            data.pesan || 'Catatan servis berhasil disimpan!',
+            'success'
+        );
+
+        resetFormServis();
+
+
+        console.log("AMBIL ULANG DATA");
+        await ambilDaftarServis();
+
     } catch (error) {
+        console.error(error);
         showToast('Gagal menyimpan catatan servis!', 'error');
     }
 }
@@ -248,22 +272,41 @@ function resetFormServis() {
 
 // Delete a service log entry
 async function hapusDataServis(id) {
-    if (!confirm('Apakah Anda yakin ingin menghapus catatan servis ini?')) return;
+
+    if (!confirm('Apakah Anda yakin ingin menghapus catatan servis ini?')) {
+        return;
+    }
+
     const token = localStorage.getItem('token');
+
     try {
+
         const respon = await fetch(`${URL_API}/servis/${id}`, {
             method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
+
         const data = await respon.json();
-        
-        if (respon.ok) {
-            showToast(data.pesan || 'Catatan servis dihapus!', 'success');
-            ambilDaftarServis();
-        } else {
-            showToast(data.pesan, 'error');
+
+        if (!respon.ok) {
+            showToast(data.pesan || 'Gagal menghapus data!', 'error');
+            return;
         }
+
+        showToast(
+            data.pesan || 'Catatan servis berhasil dihapus!',
+            'success'
+        );
+
+        await ambilDaftarServis();
+
     } catch (error) {
-        showToast('Gagal menghapus data servis!', 'error');
+        console.error(error);
+        showToast('Gagal menghapus catatan servis!', 'error');
     }
 }
+document.addEventListener('DOMContentLoaded', () => {
+    ambilDaftarServis();
+});
