@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AutoPro Service | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#4ce346",
+                        "inverse-primary": "#006e0a",
+                        "secondary-fixed": "#e5e2e3",
+                        "tertiary-container": "#b4b2b3",
+                        "on-surface-variant": "#bccbb4",
+                        "on-tertiary-fixed-variant": "#474648",
+                        "surface": "#121415",
+                        "on-secondary-fixed": "#1b1b1c",
+                        "on-primary-container": "#005105",
+                        "on-primary": "#003a03",
+                        "tertiary-fixed": "#e4e2e3",
+                        "tertiary-fixed-dim": "#c8c6c7",
+                        "surface-container-lowest": "#0c0e0f",
+                        "outline-variant": "#3d4a39",
+                        "on-tertiary": "#303031",
+                        "secondary": "#c8c6c7",
+                        "background": "#121415",
+                        "surface-container-highest": "#333536",
+                        "on-background": "#e2e2e3",
+                        "surface-container-low": "#1a1c1d",
+                        "primary-fixed-dim": "#4ce346",
+                        "on-tertiary-container": "#454445",
+                        "surface-bright": "#38393a",
+                        "primary-container": "#32cd32",
+                        "surface-container-high": "#282a2b",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "on-secondary": "#303031",
+                        "on-secondary-fixed-variant": "#474647",
+                        "on-secondary-container": "#bab8b9",
+                        "secondary-container": "#49494a",
+                        "surface-dim": "#121415",
+                        "inverse-on-surface": "#2f3132",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#c8c6c7",
+                        "outline": "#869580",
+                        "surface-container": "#1e2021",
+                        "primary-fixed": "#75ff68",
+                        "on-surface": "#e2e2e3",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#333536",
+                        "primary": "#55ea4d",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#002201",
+                        "tertiary": "#cfcdce",
+                        "inverse-surface": "#e2e2e3",
+                        "on-primary-fixed-variant": "#005306"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "48px",
+                        "xl": "80px",
+                        "md": "24px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "xs": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(26, 28, 29, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(63, 63, 65, 0.5);
+        }
+        .mech-border {
+            border: 1px solid #3F3F41;
+        }
+        .hover-glow:hover {
+            box-shadow: 0 0 15px rgba(85, 234, 77, 0.3);
+            border-color: #55ea4d;
+        }
+        /* Penyesuaian warna latar popup Leaflet agar lebih menyatu */
+        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+            background: #1e2021;
+            color: #e2e2e3;
+            border: 1px solid #3F3F41;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md overflow-x-hidden min-h-screen">
+    <nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-16 bg-surface border-b border-outline-variant">
+        <div class="flex items-center gap-4">
+            <span class="font-headline-md text-headline-md font-bold text-primary cursor-pointer" onclick="window.location.href='index.html'">AutoPro Service</span>
+        </div>
+        <div id="nav-links-container" class="hidden md:flex items-center gap-6">
+        </div>
+        <div id="nav-auth-container" class="flex items-center gap-4">
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-12 max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+            
+            <div class="lg:col-span-4 lg:sticky lg:top-24">
+                <div class="glass-panel p-6 rounded border border-outline-variant mech-border shadow-xl relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+                    
+                    <div class="flex items-center gap-2.5 mb-6 pb-4 border-b border-outline-variant">
+                        <span class="material-symbols-outlined text-primary">handyman</span>
+                        <h3 id="form-title" class="font-headline-md text-lg text-on-surface uppercase tracking-wide">Catat Servis Baru</h3>
+                    </div>
+                    
+                    <form id="form-servis" onsubmit="simpanDataServis(event)" class="space-y-4">
+                        <input type="hidden" id="servis-id">
+                        
+                        <div>
+                            <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1.5">Merek & Tipe Motor</label>
+                            <input type="text" id="motor-nama" placeholder="Cth: Honda Vario 160" required 
+                                   class="bg-surface-container-high text-on-surface border border-outline-variant rounded focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm font-medium w-full py-2.5 px-4">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1.5">Plat Nomor</label>
+                            <input type="text" id="motor-plat" placeholder="Cth: B 1234 ABC" required 
+                                   class="bg-surface-container-high text-on-surface border border-outline-variant rounded focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm font-bold w-full py-2.5 px-4 uppercase tracking-wider">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1.5">Pekerjaan Servis</label>
+                            <input type="text" id="motor-jenis" placeholder="Cth: Ganti Oli & Kampas Rem Depan" required 
+                                   class="bg-surface-container-high text-on-surface border border-outline-variant rounded focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm font-medium w-full py-2.5 px-4">
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1.5">Tgl Servis</label>
+                                <input type="date" id="motor-tgl-servis" required 
+                                       class="bg-surface-container-high text-on-surface border border-outline-variant rounded focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-[12px] font-medium w-full py-2 px-2.5">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1.5">Jadwal Kembali</label>
+                                <input type="date" id="motor-tgl-berikutnya" required 
+                                       class="bg-surface-container-high text-on-surface border border-outline-variant rounded focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-[12px] font-medium w-full py-2 px-2.5">
+                            </div>
+                        </div>
+
+                        <div class="hidden">
+                            <input type="text" id="motor-status" value="Aman">
+                        </div>
+                        
+                        <div class="flex gap-2 pt-4">
+                            <button type="submit" id="btn-submit-servis" 
+                                    class="flex-1 bg-primary text-on-primary font-label-md text-xs uppercase py-3 rounded hover:bg-primary-fixed-dim transition-all duration-300 hover-glow flex justify-center items-center gap-1.5 cursor-pointer">
+                                Simpan Data <span class="material-symbols-outlined text-md">save</span>
+                            </button>
+                            <button type="button" id="btn-batal-edit" onclick="resetFormServis()" 
+                                    class="hidden bg-transparent border border-outline text-on-surface px-3 py-3 rounded hover:bg-surface-container-high transition-all duration-300 cursor-pointer">
+                                <span class="material-symbols-outlined text-md">close</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8 space-y-8">
+                
+                <div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                        <div>
+                            <h3 class="font-headline-lg text-lg font-bold text-on-surface uppercase tracking-wide">Status Kendaraan Anda</h3>
+                            <p class="text-xs text-on-surface-variant mt-1">Sistem pelacak riwayat dan pembaruan diagnosis real-time.</p>
+                        </div>
+                        <div class="bg-surface-container-low px-4 py-1.5 rounded border border-outline-variant text-[11px] font-bold text-on-surface-variant flex items-center gap-1.5 w-max">
+                            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                            Status: Pemantauan Aktif
+                        </div>
+                    </div>
+                    <div id="list-servis-motor" class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="material-symbols-outlined text-primary">map</span>
+                        <div>
+                            <h3 class="font-headline-lg text-lg font-bold text-on-surface uppercase tracking-wide">Peta Lokasi Bengkel</h3>
+                            <p class="text-xs text-on-surface-variant mt-1">Temukan bengkel rekanan terdekat untuk servis kendaraanmu.</p>
+                        </div>
+                    </div>
+                    <div class="glass-panel p-2 rounded border border-outline-variant mech-border shadow-xl z-0">
+                        <div id="map-container" style="width: 100%; height: 450px; border-radius: 4px; z-index: 1;"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <div id="wadah-notifikasi" class="fixed bottom-5 left-5 z-50 flex flex-col gap-3"></div>
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+        async function initMap() {
+            const map = L.map('map-container').setView([0.5070677, 101.4477798], 13);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(map);
+
+            try {
+                const response = await fetch('http://localhost:5000/api/workshops');
+                const workshops = await response.json();
+
+                workshops.forEach(bengkel => {
+                    const marker = L.marker([parseFloat(bengkel.latitude), parseFloat(bengkel.longitude)]).addTo(map);
+                    
+                    const popupContent = `<div style="padding: 2px;">
+                                <h3 style="margin:0 0 5px 0; font-weight: 700; font-size: 14px; color: #4ce346;">${bengkel.nama_bengkel}</h3>
+                                <p style="margin:0; font-size: 12px; color: #bccbb4;">Layanan: ${bengkel.layanan}</p>
+                              </div>`;
+                    
+                    marker.bindPopup(popupContent);
+                });
+            } catch (error) {
+                console.error("Gagal memuat data bengkel:", error);
+            }
+        }
+
+        window.onload = function() {
+            if (typeof cekOtorisasiSesi === 'function') cekOtorisasiSesi();
+            if (typeof ambilDaftarServis === 'function') ambilDaftarServis();
+            initMap();
+        };
+    </script>
+</body>
+</html>

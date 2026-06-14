@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AutoPro Service | Motor Service Reminder</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#4ce346",
+                        "inverse-primary": "#006e0a",
+                        "secondary-fixed": "#e5e2e3",
+                        "tertiary-container": "#b4b2b3",
+                        "on-surface-variant": "#bccbb4",
+                        "on-tertiary-fixed-variant": "#474648",
+                        "surface": "#121415",
+                        "on-secondary-fixed": "#1b1b1c",
+                        "on-primary-container": "#005105",
+                        "on-primary": "#003a03",
+                        "tertiary-fixed": "#e4e2e3",
+                        "tertiary-fixed-dim": "#c8c6c7",
+                        "surface-container-lowest": "#0c0e0f",
+                        "outline-variant": "#3d4a39",
+                        "on-tertiary": "#303031",
+                        "secondary": "#c8c6c7",
+                        "background": "#121415",
+                        "surface-container-highest": "#333536",
+                        "on-background": "#e2e2e3",
+                        "surface-container-low": "#1a1c1d",
+                        "primary-fixed-dim": "#4ce346",
+                        "on-tertiary-container": "#454445",
+                        "surface-bright": "#38393a",
+                        "primary-container": "#32cd32",
+                        "surface-container-high": "#282a2b",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "on-secondary": "#303031",
+                        "on-secondary-fixed-variant": "#474647",
+                        "on-secondary-container": "#bab8b9",
+                        "secondary-container": "#49494a",
+                        "surface-dim": "#121415",
+                        "inverse-on-surface": "#2f3132",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#c8c6c7",
+                        "outline": "#869580",
+                        "surface-container": "#1e2021",
+                        "primary-fixed": "#75ff68",
+                        "on-surface": "#e2e2e3",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#333536",
+                        "primary": "#55ea4d",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#002201",
+                        "tertiary": "#cfcdce",
+                        "inverse-surface": "#e2e2e3",
+                        "on-primary-fixed-variant": "#005306"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "48px",
+                        "xl": "80px",
+                        "md": "24px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "xs": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom Utilities for the Kinetic Precision aesthetic */
+        .glass-panel {
+            background: rgba(45, 45, 46, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(63, 63, 65, 0.5);
+        }
+        
+        .mech-border {
+            border: 1px solid #3F3F41;
+        }
+        
+        .hover-glow:hover {
+            box-shadow: 0 0 15px rgba(85, 234, 77, 0.3);
+            border-color: #55ea4d;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md overflow-x-hidden">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-16 bg-surface border-b border-outline-variant">
+        <div class="flex items-center gap-4">
+            <span class="font-headline-md text-headline-md font-bold text-primary">AutoPro Service</span>
+        </div>
+        <div id="nav-links-container" class="hidden md:flex items-center gap-6">
+            <!-- Rendered dynamically by auth.js -->
+        </div>
+        <div id="nav-auth-container" class="flex items-center gap-4">
+            <!-- Rendered dynamically by auth.js -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-16">
+        <!-- Hero Section -->
+        <section class="relative w-full h-[921px] min-h-[600px] flex items-center justify-start overflow-hidden bg-surface-container-lowest">
+            <!-- Background Image with Overlay -->
+            <div class="absolute inset-0 z-0">
+                <img class="w-full h-full object-cover object-center opacity-40" alt="Sleek motorcycle inside garage" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ1mYV1bJDs0bqdsz-VGS2FNozw6MmyW70eoEcbX7Lpk-gXlGs2RWNgX3ZqteuGmd7iqeouC4ZS-A5aoAY43w-Fj4-kIqeBzOJnXiHWhtgYi1VMrrCsuwGbdjdI3X7o1fxQBb2kxlgqFiOEs5w29dqfFB80qb-SskVBZXfssHN009wmXSuElLsR6eIMq_tlI-5ElMQ5s3NCzL_k-Ggb_hWDvJPa2V56zUIZWdJoKJwcH_f4BMMVPjPdMrA_dskGkzg1Q7FXTBY0zAX"/>
+                <div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/80 to-transparent"></div>
+            </div>
+            <!-- Hero Content -->
+            <div class="relative z-10 w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-12 gap-gutter">
+                <div class="md:col-span-8 lg:col-span-6 flex flex-col justify-center">
+                    <div class="inline-flex items-center gap-2 mb-6 bg-surface-container-high px-4 py-2 rounded border border-outline-variant w-max mech-border">
+                        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                        <span class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider">Diagnostic System Online</span>
+                    </div>
+                    <h1 class="font-display-lg text-display-lg text-on-surface mb-6 uppercase">Keep Your Ride in <br/><span class="text-primary">Peak Condition</span></h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant mb-xl max-w-lg">
+                        Industrial-grade tracking for your vehicle's maintenance schedule. Proactive alerts, service logs, and technical precision guaranteed.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="window.location.href='dashboard.html'" class="bg-primary text-on-primary font-label-md text-label-md uppercase px-8 py-4 rounded hover:bg-primary-fixed-dim transition-all duration-300 hover-glow flex items-center justify-center gap-2">
+                            Get Started
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
+                        <button onclick="document.getElementById('workflow').scrollIntoView({ behavior: 'smooth' })" class="bg-transparent border border-outline text-on-surface font-label-md text-label-md uppercase px-8 py-4 rounded hover:bg-surface-container-high transition-all duration-300 flex items-center justify-center">
+                            View Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it Works Section -->
+        <section id="workflow" class="w-full py-xl bg-background border-t border-outline-variant relative">
+            <div class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop">
+                <div class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-outline-variant pb-8">
+                    <div>
+                        <h2 class="font-headline-lg text-headline-lg md:text-display-lg text-on-surface uppercase">Operational Workflow</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant mt-2">Engineered for simplicity and precision tracking.</p>
+                    </div>
+                    <div class="flex items-center gap-2 text-primary font-label-md text-label-md">
+                        <span>SYSTEM STATUS:</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/20">OPTIMAL</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+                    <!-- Step 1 -->
+                    <div class="bg-surface-container-low p-6 rounded border border-outline-variant mech-border hover-glow transition-all duration-300 group relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-surface-variant group-hover:bg-primary transition-colors"></div>
+                        <div class="mb-6 flex justify-between items-start">
+                            <div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-outline-variant">
+                                <span class="material-symbols-outlined text-primary text-3xl">directions_car</span>
+                            </div>
+                            <span class="font-headline-md text-headline-md text-outline-variant group-hover:text-primary transition-colors font-bold opacity-30">01</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-3">Add Vehicle</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Input your motorcycle's make, model, and current mileage to initialize the diagnostic profile.
+                        </p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="bg-surface-container-low p-6 rounded border border-outline-variant mech-border hover-glow transition-all duration-300 group relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-surface-variant group-hover:bg-primary transition-colors"></div>
+                        <div class="mb-6 flex justify-between items-start">
+                            <div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-outline-variant">
+                                <span class="material-symbols-outlined text-primary text-3xl">calendar_month</span>
+                            </div>
+                            <span class="font-headline-md text-headline-md text-outline-variant group-hover:text-primary transition-colors font-bold opacity-30">02</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-3">Set Schedule</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Define service intervals for oil changes, tire rotations, and chain maintenance based on manufacturer specs.
+                        </p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="bg-surface-container-low p-6 rounded border border-outline-variant mech-border hover-glow transition-all duration-300 group relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-surface-variant group-hover:bg-primary transition-colors"></div>
+                        <div class="mb-6 flex justify-between items-start">
+                            <div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-outline-variant">
+                                <span class="material-symbols-outlined text-primary text-3xl">notifications_active</span>
+                            </div>
+                            <span class="font-headline-md text-headline-md text-outline-variant group-hover:text-primary transition-colors font-bold opacity-30">03</span>
+                        </div>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-3">Get Alerts</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Receive proactive notifications before critical service thresholds are reached to ensure uninterrupted performance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-xl px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-md bg-surface-container-lowest border-t border-outline-variant">
+        <div class="flex items-center gap-4">
+            <span class="font-headline-md text-headline-md text-primary">AutoPro Service</span>
+        </div>
+        <p class="font-body-md text-body-md text-on-tertiary-fixed-variant text-center md:text-left">
+            © 2024 AutoPro Service Systems. Technical Precision Guaranteed.
+        </p>
+        <div class="flex flex-wrap justify-center gap-6">
+            <a class="font-label-sm text-label-sm text-on-tertiary-fixed-variant hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded px-2 py-1" href="#">Privacy Policy</a>
+            <a class="font-label-sm text-label-sm text-on-tertiary-fixed-variant hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded px-2 py-1" href="#">Terms of Service</a>
+            <a class="font-label-sm text-label-sm text-on-tertiary-fixed-variant hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded px-2 py-1" href="#">Contact Support</a>
+            <a class="font-label-sm text-label-sm text-on-tertiary-fixed-variant hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded px-2 py-1" href="#">Technical API</a>
+        </div>
+    </footer>
+
+    <!-- App Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        window.onload = cekOtorisasiSesi;
+    </script>
+</body>
+</html>
