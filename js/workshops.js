@@ -22,38 +22,99 @@ const workshops = [
 let map;
 let markers = [];
 
+async function cariBengkelTerdekat(lat, lng) {
+    const query = `
+    [out:json];
+    (
+      node["shop"="motorcycle"](around:5000,${lat},${lng});
+      node["amenity"="car_repair"](around:5000,${lat},${lng});
+    );
+    out;
+    `;
+
+    try {
+        const response = await fetch(
+            "https://overpass-api.de/api/interpreter",
+            {
+                method: "POST",
+                body: query
+            }
+        );
+
+        const data = await response.json();
+
+        const bengkelOSM = data.elements.map(item => ({
+            nama: item.tags?.name || "Bengkel Motor",
+            lat: item.lat,
+            lng: item.lon,
+            layanan: "Servis Motor",
+            telepon: item.tags?.phone || "-",
+            jamBuka: item.tags?.opening_hours || "-"
+        }));
+
+        if (bengkelOSM.length > 0) {
+            renderWorkshops(bengkelOSM);
+        }
+
+    } catch (err) {
+        console.error("Gagal mengambil data bengkel:", err);
+    }
+}
+
 function initWorkshops() {
+
     map = L.map('ws-map').setView([-0.9471, 100.4172], 13);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+    L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            attribution: '&copy; OpenStreetMap contributors'
+        }
+    ).addTo(map);
 
     renderWorkshops(workshops);
 
     const searchInput = document.getElementById("ws-search");
+
     if (searchInput) {
         searchInput.addEventListener("input", (e) => {
+
             const query = e.target.value.toLowerCase();
-            const filtered = workshops.filter(ws => 
-                ws.nama.toLowerCase().includes(query) || 
+
+            const filtered = workshops.filter(ws =>
+                ws.nama.toLowerCase().includes(query) ||
                 ws.layanan.toLowerCase().includes(query)
             );
+
             renderWorkshops(filtered);
         });
     }
 
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
 
-            L.marker([lat, lng])
-                .addTo(map)
-                .bindPopup("Lokasi Anda");
+        navigator.geolocation.getCurrentPosition(
 
-            map.setView([lat, lng], 14);
-        });
+            async (position) => {
+
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                L.marker([lat, lng])
+                    .addTo(map)
+                    .bindPopup("📍 Lokasi Anda")
+                    .openPopup();
+
+                map.setView([lat, lng], 14);
+
+                await cariBengkelTerdekat(lat, lng);
+            },
+
+            (err) => {
+                console.error(err);
+                alert("Gagal mendapatkan lokasi pengguna");
+            }
+
+        );
     }
 }
 
