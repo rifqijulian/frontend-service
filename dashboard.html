@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
     <script id="tailwind-config">
         tailwind.config = {
@@ -171,6 +170,11 @@
                             <input type="text" id="motor-jenis" placeholder="Cth: Ganti Oli & Kampas Rem Depan" required 
                                    class="bg-surface-container-high text-on-surface border border-outline-variant rounded focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm font-medium w-full py-2.5 px-4">
                         </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-1.5">Biaya Servis (Rp)</label>
+                            <input type="number" id="motor-harga" placeholder="Cth: 150000" min="0" required 
+                                   class="bg-surface-container-high text-on-surface border border-outline-variant rounded focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm font-medium w-full py-2.5 px-4">
+                        </div>
                         
                         <div class="grid grid-cols-2 gap-4">
                             <div>
@@ -281,41 +285,10 @@
     <script src="js/dashboard.js"></script>
     <script src="js/dashboard-summary.js"></script>
     
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
     <script>
-        async function initMap() {
-            const map = L.map('map-container').setView([0.5070677, 101.4477798], 13);
-
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-                subdomains: 'abcd',
-                maxZoom: 20
-            }).addTo(map);
-
-            try {
-                const response = await fetch('http://localhost:5000/api/workshops');
-                const workshops = await response.json();
-
-                workshops.forEach(bengkel => {
-                    const marker = L.marker([parseFloat(bengkel.latitude), parseFloat(bengkel.longitude)]).addTo(map);
-                    
-                    const popupContent = `<div style="padding: 2px;">
-                                <h3 style="margin:0 0 5px 0; font-weight: 700; font-size: 14px; color: #4ce346;">${bengkel.nama_bengkel}</h3>
-                                <p style="margin:0; font-size: 12px; color: #bccbb4;">Layanan: ${bengkel.layanan}</p>
-                              </div>`;
-                    
-                    marker.bindPopup(popupContent);
-                });
-            } catch (error) {
-                console.error("Gagal memuat data bengkel:", error);
-            }
-        }
-
         window.onload = function() {
             if (typeof cekOtorisasiSesi === 'function') cekOtorisasiSesi();
             if (typeof ambilDaftarServis === 'function') ambilDaftarServis();
-            initMap();
         };
     </script>
 </body>

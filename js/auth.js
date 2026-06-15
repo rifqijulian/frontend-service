@@ -124,3 +124,109 @@ function updateNavbarForLoggedInUser(isLoggedIn) {
         `;
     }
 }
+
+// Submit login data to API
+async function prosesLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        const response = await fetch(`${URL_API}/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem('token', data.token);
+            window.location.href = 'dashboard.html';
+        } else {
+            showToast(data.pesan || 'Login gagal!', 'error');
+        }
+    } catch (error) {
+        console.error('Error login:', error);
+        showToast('Koneksi ke server gagal!', 'error');
+    }
+}
+
+// Submit registration data to API
+async function prosesRegister(event) {
+    event.preventDefault();
+    const fname = document.getElementById('fname').value;
+    const lname = document.getElementById('lname').value;
+    const nama = `${fname} ${lname}`.trim();
+    const email = document.getElementById('reg-email').value;
+    const password = document.getElementById('reg-password').value;
+
+    try {
+        const response = await fetch(`${URL_API}/auth/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nama, email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            showToast(data.pesan || 'Registrasi berhasil!', 'success');
+            // Reset register form inputs
+            document.getElementById('form-register').reset();
+            // Switch to login tab
+            if (typeof switchTab === 'function') {
+                switchTab('login');
+            }
+        } else {
+            showToast(data.pesan || 'Registrasi gagal!', 'error');
+        }
+    } catch (error) {
+        console.error('Error registrasi:', error);
+        showToast('Koneksi ke server gagal!', 'error');
+    }
+}
+
+// Logout user and clear session
+function prosesLogout() {
+    localStorage.removeItem('token');
+    window.location.href = 'login.html';
+}
+
+// Show custom toast notifications dynamically
+function showToast(message, type = 'success') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'fixed bottom-5 right-5 z-50 flex flex-col gap-3';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    const bgClass = type === 'success' ? 'bg-primary/20 border-primary text-primary' : 'bg-error/20 border-error text-error';
+    const icon = type === 'success' ? 'check_circle' : 'error';
+    
+    toast.className = `flex items-center gap-2.5 px-4 py-3 rounded border shadow-2xl glass-panel transform translate-y-5 opacity-0 transition-all duration-300 ${bgClass}`;
+    toast.innerHTML = `
+        <span class="material-symbols-outlined text-md">${icon}</span>
+        <span class="text-xs font-semibold uppercase tracking-wider">${message}</span>
+    `;
+    
+    container.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+        toast.classList.remove('translate-y-5', 'opacity-0');
+    }, 10);
+    
+    // Fade out and remove
+    setTimeout(() => {
+        toast.classList.add('translate-y-5', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}

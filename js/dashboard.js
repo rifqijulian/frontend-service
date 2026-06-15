@@ -88,6 +88,13 @@ async function ambilDaftarServis() {
                                 </div>
                             </div>
                             <div class="flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-sm text-primary">payments</span>
+                                <div class="flex-1 flex justify-between items-center border-b border-dashed border-outline-variant pb-1">
+                                    <span class="text-on-surface-variant text-[12px]">Biaya Servis</span>
+                                    <span class="font-semibold text-primary text-[12px]">Rp ${Number(item.harga || 0).toLocaleString('id-ID')}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2.5">
                                 <span class="material-symbols-outlined text-sm text-on-surface-variant">calendar_today</span>
                                 <div class="flex-1 flex justify-between items-center border-b border-dashed border-outline-variant pb-1">
                                     <span class="text-on-surface-variant text-[12px]">Servis Terakhir</span>
@@ -105,7 +112,7 @@ async function ambilDaftarServis() {
                     </div>
                     
                     <div class="flex justify-end gap-2 mt-6 pt-4 border-t border-outline-variant">
-                        <button onclick="siapkanEditServis('${item.id}', '${item.nama_motor.replace(/'/g, "\\'")}', '${item.plat_nomor.replace(/'/g, "\\'")}', '${item.jenis_servis.replace(/'/g, "\\'")}', '${formatTglServis}', '${formatTglBerikutnya}')" 
+                        <button onclick="siapkanEditServis('${item.id}', '${item.nama_motor.replace(/'/g, "\\'")}', '${item.plat_nomor.replace(/'/g, "\\'")}', '${item.jenis_servis.replace(/'/g, "\\'")}', '${item.harga}', '${formatTglServis}', '${formatTglBerikutnya}')" 
                                 class="text-on-surface-variant hover:text-primary hover:bg-surface-container-high px-3 py-1.5 rounded text-sm font-semibold transition-all flex items-center gap-1 border border-transparent hover:border-outline-variant">
                             <span class="material-symbols-outlined text-sm">edit</span> Ubah
                         </button>
@@ -117,6 +124,10 @@ async function ambilDaftarServis() {
                 </div>
             `;
         });
+
+        if (typeof updateDashboardSummary === 'function') {
+            updateDashboardSummary(data);
+        }
     } catch (error) {
         showToast('Gagal memuat daftar servis!', 'error');
     }
@@ -178,6 +189,7 @@ async function simpanDataServis(event) {
     const nama_motor = document.getElementById('motor-nama').value;
     const plat_nomor = document.getElementById('motor-plat').value;
     const jenis_servis = document.getElementById('motor-jenis').value;
+    const harga = document.getElementById('motor-harga').value || 0;
     const tanggal_servis = document.getElementById('motor-tgl-servis').value;
     const tanggal_berikutnya = document.getElementById('motor-tgl-berikutnya').value;
     const status = document.getElementById('motor-status').value || 'Aman';
@@ -198,6 +210,7 @@ async function simpanDataServis(event) {
                 nama_motor,
                 plat_nomor,
                 jenis_servis,
+                harga,
                 tanggal_servis,
                 tanggal_berikutnya,
                 status
@@ -231,11 +244,12 @@ async function simpanDataServis(event) {
 }
 
 // Populate the inputs to prepare for editing
-function siapkanEditServis(id, nama, plat, jenis, tglServis, tglBerikutnya) {
+function siapkanEditServis(id, nama, plat, jenis, harga, tglServis, tglBerikutnya) {
     document.getElementById('servis-id').value = id;
     document.getElementById('motor-nama').value = nama;
     document.getElementById('motor-plat').value = plat;
     document.getElementById('motor-jenis').value = jenis;
+    document.getElementById('motor-harga').value = harga;
     document.getElementById('motor-tgl-servis').value = tglServis;
     document.getElementById('motor-tgl-berikutnya').value = tglBerikutnya;
 
@@ -257,6 +271,7 @@ function siapkanEditServis(id, nama, plat, jenis, tglServis, tglBerikutnya) {
 function resetFormServis() {
     document.getElementById('form-servis').reset();
     document.getElementById('servis-id').value = '';
+    document.getElementById('motor-harga').value = '';
     
     const formTitle = document.getElementById('form-title');
     formTitle.innerHTML = 'Catat Servis Baru';
